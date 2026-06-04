@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sports & Cuts 2 | Premium Barbershop | Maricopa, AZ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --black:#060606;
+  --charcoal:#0f0f0f;
+  --charcoal-mid:#161616;
+  --charcoal-light:#1e1e1e;
+  --gold:#c9a84c;
+  --gold-light:#e8c96a;
+  --gold-dim:#7a6030;
+  --gold-glow:rgba(201,168,76,0.15);
+  --red:#b91c1c;
+  --white:#f0ebe0;
+  --white-dim:#7a7060;
+  --border:rgba(201,168,76,0.15);
+  --border-dim:rgba(255,255,255,0.04);
+}
+html{overflow-x:hidden;scroll-behavior:auto;}
+body{
+  background:var(--black);
+  color:var(--white);
+  font-family:'Barlow',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+  cursor:none;
+  visibility:hidden; /* FOUC prevention — GSAP reveals */
+}
+
+/* ── CURSOR ── */
+#cursor-dot{
+  position:fixed;width:8px;height:8px;
+  background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  will-change:transform;
+}
+#cursor-outline{
+  position:fixed;width:36px;height:36px;
+  border:1px solid rgba(201,168,76,0.6);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  will-change:transform;
+}
+.cur-expand #cursor-dot{
+  width:48px;height:48px;
+  background:rgba(201,168,76,0.12);
+  border:1px solid var(--gold);
+}
+.cur-expand #cursor-outline{width:64px;height:64px;}
+.cur-text #cursor-dot{
+  width:64px;height:64px;
+  background:rgba(201,168,76,0.1);
+  border:1px solid rgba(201,168,76,0.5);
+  border-radius:4px;
+}
+
+/* ── NOISE OVERLAY ── */
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9990;opacity:0.45;
+}
+
+/* ── NAV ── */
+#site-nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:2rem 3rem;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:padding 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+#site-nav.stuck{
+  padding:1rem 3rem;
+  background:rgba(6,6,6,0.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border-dim);
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;font-size:1.7rem;
+  letter-spacing:0.1em;color:var(--gold);text-decoration:none;
+  opacity:0;/* GSAP animates in */
+}
+.nav-logo span{color:var(--white);}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--white-dim);text-decoration:none;
+  position:relative;transition:color 0.3s;
+  opacity:0;/* GSAP animates in */
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-3px;left:0;
+  width:0;height:1px;background:var(--gold);
+  transition:width 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-links a:hover{color:var(--gold);}
+.nav-links a:hover::after{width:100%;}
+.nav-book{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.78rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--black);text-decoration:none;
+  background:var(--gold);
+  padding:0.7rem 1.75rem;
+  clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+  position:relative;overflow:hidden;
+  opacity:0;/* GSAP animates in */
+  transition:background 0.3s;display:inline-block;
+}
+.nav-book::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.25) 50%,transparent 60%);
+  transform:translateX(-100%);transition:transform 0.6s;
+}
+.nav-book:hover::before{transform:translateX(100%);}
+.nav-book:hover{background:var(--gold-light);}
+
+/* ── HERO ── */
+#hero{
+  position:relative;height:100vh;min-height:680px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+/* Layered dark background */
+.hero-bg-layer{
+  position:absolute;inset:0;
+  background-image:url('https://res.cloudinary.com/dpuzecfyp/image/upload/q_auto/f_auto/v1780445878/macroodry-clipper-8254064_m1aynf.jpg');
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+.hero-bg-layer::after{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(to bottom, rgba(6,6,6,0.7) 0%, rgba(6,6,6,0.55) 50%, rgba(6,6,6,0.85) 100%),
+    radial-gradient(ellipse 80% 60% at 60% 35%, rgba(201,168,76,0.07) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 10% 85%, rgba(185,28,28,0.04) 0%, transparent 55%);
+}
+/* Perspective grid */
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(201,168,76,0.04) 1px,transparent 1px);
+  background-size:70px 70px;
+  will-change:transform;
+  transform-origin:50% 100%;
+}
+/* Ambient glow orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;will-change:transform;}
+.orb-a{width:600px;height:600px;background:rgba(201,168,76,0.055);top:-15%;right:-10%;}
+.orb-b{width:450px;height:450px;background:rgba(185,28,28,0.035);bottom:-5%;left:-8%;}
+.orb-c{width:300px;height:300px;background:rgba(201,168,76,0.04);top:35%;left:8%;}
+
+/* Diagonal accent lines */
+.hero-lines{
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;
+}
+.hero-lines::before,
+.hero-lines::after{
+  content:'';position:absolute;
+  width:1px;background:linear-gradient(to bottom,transparent,rgba(201,168,76,0.15),transparent);
+}
+.hero-lines::before{height:60%;top:20%;left:25%;}
+.hero-lines::after{height:50%;top:25%;right:25%;}
+
+.hero-content{
+  position:relative;z-index:5;
+  text-align:center;padding:0 2rem;
+  max-width:1000px;width:100%;
+}
+.hero-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.75rem;letter-spacing:0.45em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:2.5rem;
+  display:flex;align-items:center;justify-content:center;gap:1.5rem;
+  overflow:hidden;
+}
+.hero-eyebrow-line{
+  width:40px;height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:right;
+}
+.hero-eyebrow-line.right{transform-origin:left;}
+
+/* Title: each word in its own overflow container */
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(5rem,17vw,15rem);
+  line-height:0.84;
+  letter-spacing:0.015em;
+  margin-bottom:2rem;
+}
+.title-row{overflow:hidden;display:block;}
+.title-word{display:inline-block;} /* GSAP slides up from inside overflow:hidden */
+
+/* Outline stroke word */
+.word-outline{
+  -webkit-text-stroke:2px rgba(240,235,224,0.85);
+  color:transparent;
+}
+/* Gold shimmer word */
+.word-gold{
+  background:linear-gradient(105deg,#c9a84c 0%,#e8c96a 40%,#c9a84c 60%,#a07830 100%);
+  background-size:250% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmer 5s linear infinite;
+}
+@keyframes shimmer{
+  0%{background-position:0% center;}
+  100%{background-position:250% center;}
+}
+
+.hero-sub{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(0.8rem,1.6vw,1.05rem);
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--white-dim);margin-bottom:3.5rem;
+  overflow:hidden;
+}
+.hero-sub-inner{display:inline-block;}
+
+.hero-ctas{
+  display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
+}
+.btn-primary{
+  display:inline-block;
+  background:var(--gold);color:var(--black);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.83rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;
+  text-decoration:none;padding:1.05rem 2.75rem;
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+  position:relative;overflow:hidden;
+  transition:background 0.35s,transform 0.2s;
+  will-change:transform;
+}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,0.28) 50%,transparent 65%);
+  transform:translateX(-100%);transition:transform 0.55s;
+}
+.btn-primary:hover::before{transform:translateX(100%);}
+.btn-primary:hover{background:var(--gold-light);}
+.btn-ghost{
+  display:inline-block;
+  border:1px solid var(--border);color:var(--white);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.83rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;
+  text-decoration:none;padding:1.05rem 2.75rem;
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+  transition:border-color 0.35s,color 0.35s,background 0.35s;
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+/* Pulsing Book Now */
+.pulse-ring{
+  position:relative;
+}
+.pulse-ring::after{
+  content:'';position:absolute;inset:-4px;
+  border:1px solid var(--gold);
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+  animation:pulseRing 2.5s ease-out infinite;
+  opacity:0;
+}
+@keyframes pulseRing{
+  0%{transform:scale(1);opacity:0.7;}
+  100%{transform:scale(1.08);opacity:0;}
+}
+
+/* Scroll indicator */
+.hero-scroll{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.6rem;
+  z-index:5;
+}
+.hero-scroll span{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.62rem;letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--white-dim);
+}
+.scroll-bar{
+  width:1px;height:55px;
+  background:linear-gradient(to bottom,var(--gold),transparent);
+  animation:scrollDrop 2s ease-in-out infinite;
+}
+@keyframes scrollDrop{
+  0%{transform:scaleY(0);transform-origin:top;opacity:1;}
+  45%{transform:scaleY(1);transform-origin:top;opacity:1;}
+  55%{transform:scaleY(1);transform-origin:bottom;opacity:1;}
+  100%{transform:scaleY(0);transform-origin:bottom;opacity:0;}
+}
+
+/* ── TICKER ── */
+.ticker{
+  background:var(--gold);padding:0.65rem 0;
+  overflow:hidden;white-space:nowrap;
+  position:relative;z-index:10;
+}
+.ticker-inner{display:inline-flex;animation:tickerRoll 32s linear infinite;}
+.ticker-inner span{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.75rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--black);padding:0 2rem;
+}
+.ticker-inner .bull{color:var(--red);padding:0;}
+@keyframes tickerRoll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── STATS STRIP ── */
+#stats{
+  background:var(--charcoal);
+  border-top:1px solid var(--border-dim);
+  border-bottom:1px solid var(--border-dim);
+  padding:0;
+}
+.stats-grid{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.stat-cell{
+  padding:3.5rem 2rem;text-align:center;
+  border-right:1px solid var(--border-dim);
+  position:relative;overflow:hidden;
+}
+.stat-cell:last-child{border-right:none;}
+.stat-cell::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,rgba(201,168,76,0.06) 0%,transparent 70%);
+  opacity:0;transition:opacity 0.4s;
+}
+.stat-cell:hover::before{opacity:1;}
+.stat-val{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:4.5rem;line-height:1;color:var(--gold);
+  display:block;
+}
+.stat-lbl{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--white-dim);margin-top:0.4rem;
+}
+
+/* ── SECTION UTILITIES ── */
+.section-tag{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.7rem;letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--gold);
+  display:flex;align-items:center;gap:0.9rem;
+  margin-bottom:1.1rem;
+}
+.section-tag::before{
+  content:'';width:32px;height:1px;background:var(--gold);flex-shrink:0;
+}
+.section-h{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,5.5vw,5.5rem);
+  line-height:0.88;letter-spacing:0.03em;
+}
+.gold-text{color:var(--gold);}
+
+/* overflow clip for slide-up reveals */
+.clip-reveal{overflow:hidden;}
+.clip-inner{display:block;}
+
+/* ── ABOUT ── */
+#about{
+  padding:10rem 3rem;max-width:1280px;margin:0 auto;
+}
+.about-layout{
+  display:grid;grid-template-columns:1fr 1.15fr;
+  gap:7rem;align-items:center;
+}
+.about-body{margin-top:2.5rem;}
+.about-body p{
+  font-size:1.05rem;line-height:1.88;
+  color:var(--white-dim);margin-bottom:1.25rem;
+}
+.about-body p strong{color:var(--white);font-weight:500;}
+.about-card{
+  position:relative;
+  background:var(--charcoal-mid);
+  border:1px solid var(--border);
+  padding:3.5rem;
+  clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,22px 100%,0 calc(100% - 22px));
+}
+.card-corner{
+  position:absolute;width:55px;height:55px;
+  border-color:var(--gold);border-style:solid;
+}
+.cc-tr{top:-1px;right:-1px;border-width:2px 2px 0 0;}
+.cc-bl{bottom:-1px;left:-1px;border-width:0 0 2px 2px;}
+.about-card-quote{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.6rem;line-height:0.95;
+  color:var(--gold);margin-bottom:1.5rem;
+}
+.about-card p{
+  font-size:0.95rem;line-height:1.8;
+  color:var(--white-dim);margin-bottom:0.85rem;
+}
+.about-card-addr{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--gold-dim);margin-top:1.75rem;
+}
+
+/* ── SERVICES ── */
+#services{
+  background:var(--charcoal);
+  border-top:1px solid var(--border-dim);
+}
+.services-top{
+  padding:10rem 3rem 4rem;max-width:1280px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:flex-end;
+}
+.services-top-note{
+  font-size:0.88rem;color:var(--white-dim);
+  max-width:260px;text-align:right;line-height:1.65;
+}
+/* Horizontal drag track */
+.svc-scroll{
+  overflow-x:auto;padding:0 3rem 3rem;
+  scrollbar-width:none;-ms-overflow-style:none;
+  cursor:grab;user-select:none;
+}
+.svc-scroll::-webkit-scrollbar{display:none;}
+.svc-scroll:active{cursor:grabbing;}
+.svc-track{
+  display:flex;gap:0;
+  width:max-content;
+  border-left:1px solid var(--border-dim);
+}
+.svc-card{
+  width:270px;flex-shrink:0;
+  background:var(--charcoal-mid);
+  padding:2.5rem 2rem;
+  position:relative;overflow:hidden;
+  border-right:1px solid var(--border-dim);
+  border-bottom:3px solid transparent;
+  transition:background 0.35s,border-bottom-color 0.35s;
+}
+.svc-card::after{
+  content:'';position:absolute;bottom:0;left:0;
+  width:0;height:3px;background:var(--gold);
+  transition:width 0.45s cubic-bezier(0.16,1,0.3,1);
+}
+.svc-card:hover{background:var(--charcoal-light);}
+.svc-card:hover::after{width:100%;}
+.svc-card-num{
+  font-family:'Bebas Neue',sans-serif;font-size:5rem;
+  color:rgba(201,168,76,0.07);line-height:1;
+  position:absolute;top:0.5rem;right:1rem;
+  pointer-events:none;transition:color 0.35s;
+}
+.svc-card:hover .svc-card-num{color:rgba(201,168,76,0.13);}
+.svc-icon{font-size:1.3rem;margin-bottom:1rem;display:block;}
+.svc-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1.1rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;
+  color:var(--white);margin-bottom:0.45rem;
+}
+.svc-desc{
+  font-size:0.8rem;color:var(--white-dim);
+  line-height:1.6;margin-bottom:2rem;min-height:48px;
+}
+.svc-price{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.2rem;color:var(--gold);line-height:1;
+}
+.svc-price small{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.85rem;font-weight:300;color:var(--gold-dim);
+}
+.svc-badge{
+  position:absolute;top:0;left:0;
+  background:var(--red);color:var(--white);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  padding:0.22rem 0.65rem;
+}
+.svc-featured{background:linear-gradient(145deg,#110d03,#181818)!important;}
+.svc-cta-row{
+  text-align:center;padding:2rem 3rem 8rem;
+}
+
+/* Drag hint */
+.drag-hint{
+  display:flex;align-items:center;gap:0.6rem;
+  padding:1.25rem 3rem 0;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--white-dim);
+}
+.drag-arrow{display:inline-block;animation:arrowSlide 1.5s ease-in-out infinite;}
+@keyframes arrowSlide{0%,100%{transform:translateX(0);}50%{transform:translateX(7px);}}
+
+/* ── STATEMENT PARALLAX ── */
+#statement{
+  padding:11rem 3rem;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+#statement::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at center,rgba(201,168,76,0.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.statement-bg-word{
+  position:absolute;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(9rem,26vw,24rem);
+  color:rgba(201,168,76,0.025);
+  white-space:nowrap;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  will-change:transform;
+  line-height:1;
+  letter-spacing:0.02em;
+}
+.statement-inner{position:relative;z-index:2;}
+.statement-inner h2{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,8vw,7rem);
+  line-height:0.88;margin-bottom:1.5rem;
+}
+.statement-inner h2 em{
+  font-style:normal;
+  -webkit-text-stroke:1.5px var(--gold);
+  color:transparent;
+}
+.statement-inner p{
+  font-size:1rem;color:var(--white-dim);
+  max-width:520px;margin:0 auto 2.5rem;line-height:1.82;
+}
+
+/* ── TEAM ── */
+#team{
+  padding:10rem 3rem;
+  background:var(--charcoal);
+  border-top:1px solid var(--border-dim);
+}
+.team-inner{max-width:1280px;margin:0 auto;}
+.team-head{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:4rem;
+}
+.team-head-note{
+  font-size:0.88rem;color:var(--white-dim);
+  max-width:260px;text-align:right;line-height:1.65;
+}
+.team-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:3px;
+}
+.team-card{
+  position:relative;overflow:hidden;
+  background:var(--charcoal-mid);
+  aspect-ratio:3/4;
+}
+.team-img-wrap{width:100%;height:100%;overflow:hidden;}
+.team-img{
+  width:100%;height:100%;object-fit:cover;object-position:top center;
+  filter:grayscale(55%) contrast(1.12) brightness(0.82);
+  transition:transform 0.65s cubic-bezier(0.16,1,0.3,1),filter 0.5s;
+  will-change:transform;
+}
+.team-card:hover .team-img{
+  transform:scale(1.07);
+  filter:grayscale(0%) contrast(1.08) brightness(0.92);
+}
+.team-gradient{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(6,6,6,0.88) 0%,transparent 55%);
+  z-index:2;
+}
+.team-gold-bar{
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform 0.45s cubic-bezier(0.16,1,0.3,1);z-index:4;
+}
+.team-card:hover .team-gold-bar{transform:scaleX(1);}
+.team-info{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1.1rem 1rem;z-index:3;
+  transform:translateY(6px);
+  transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.team-card:hover .team-info{transform:translateY(0);}
+.team-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.95rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;color:var(--white);
+}
+.team-role{
+  font-size:0.7rem;color:var(--gold-dim);
+  letter-spacing:0.06em;margin-top:0.15rem;
+}
+
+/* ── HOURS ── */
+#hours{
+  padding:10rem 3rem;
+  border-top:1px solid var(--border-dim);
+}
+.hours-wrap{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1.2fr 1fr;
+  gap:8rem;align-items:start;
+}
+.hours-table{margin-top:3rem;}
+.hours-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.05rem 0;
+  border-bottom:1px solid var(--border-dim);
+  transition:padding-left 0.3s;
+}
+.hours-row:hover{padding-left:0.5rem;}
+.day{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--white-dim);transition:color 0.3s;
+}
+.hours-row:hover .day{color:var(--white);}
+.time-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.92rem;font-weight:600;letter-spacing:0.06em;color:var(--white);
+}
+.time-val.closed{color:var(--red);}
+.hours-box{
+  background:var(--charcoal-mid);
+  border:1px solid var(--border);
+  padding:3rem;
+  clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));
+  position:sticky;top:110px;
+}
+.hours-box h3{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.8rem;line-height:0.95;margin-bottom:1rem;
+}
+.hours-box p{
+  font-size:0.9rem;color:var(--white-dim);line-height:1.75;margin-bottom:0.75rem;
+}
+.hours-phone{
+  font-family:'Bebas Neue',sans-serif;font-size:2.1rem;
+  color:var(--gold);text-decoration:none;
+  display:block;margin:1.5rem 0;letter-spacing:0.04em;
+  transition:color 0.3s;
+}
+.hours-phone:hover{color:var(--gold-light);}
+.policy-note{
+  font-size:0.76rem;color:var(--white-dim);line-height:1.65;
+  border-top:1px solid var(--border-dim);
+  padding-top:1.1rem;margin-top:1.5rem;
+}
+.policy-note strong{color:rgba(240,235,224,0.5);}
+
+/* ── FINAL CTA ── */
+#final-cta{
+  padding:12rem 3rem;
+  text-align:center;position:relative;overflow:hidden;
+}
+#final-cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 65% 55% at center,rgba(201,168,76,0.09) 0%,transparent 65%);
+  pointer-events:none;
+}
+.cta-inner{position:relative;z-index:2;max-width:760px;margin:0 auto;}
+.cta-big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4rem,11vw,10rem);
+  line-height:0.85;margin-bottom:2rem;
+}
+.cta-big em{font-style:normal;color:var(--gold);display:block;}
+.cta-inner p{
+  font-size:1rem;color:var(--white-dim);
+  margin-bottom:3rem;line-height:1.82;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:#040404;
+  border-top:1px solid var(--border-dim);
+  padding:5rem 3rem 2rem;
+}
+.footer-wrap{
+  max-width:1280px;margin:0 auto;
+}
+.footer-top{
+  display:grid;grid-template-columns:2fr 1fr 1fr;
+  gap:5rem;padding-bottom:4rem;
+  border-bottom:1px solid var(--border-dim);
+  margin-bottom:2rem;
+}
+.footer-logo-txt{
+  font-family:'Bebas Neue',sans-serif;font-size:2rem;
+  color:var(--gold);display:block;margin-bottom:1rem;
+}
+.footer-logo-txt span{color:var(--white);}
+.footer-about{
+  font-size:0.85rem;color:var(--white-dim);
+  line-height:1.78;max-width:290px;
+}
+.footer-socials{display:flex;gap:0.5rem;margin-top:1.5rem;}
+.soc{
+  width:36px;height:36px;
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;color:var(--white-dim);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.68rem;font-weight:700;letter-spacing:0.04em;
+  transition:border-color 0.3s,color 0.3s;
+}
+.soc:hover{border-color:var(--gold);color:var(--gold);}
+.footer-col h4{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+}
+.footer-col ul{list-style:none;}
+.footer-col ul li{
+  margin-bottom:0.65rem;font-size:0.85rem;
+  color:var(--white-dim);line-height:1.5;
+}
+.footer-col ul li a{
+  color:var(--white-dim);text-decoration:none;transition:color 0.3s;
+}
+.footer-col ul li a:hover{color:var(--gold);}
+.footer-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-bottom p{font-size:0.78rem;color:var(--white-dim);}
+.footer-credit{font-size:0.72rem;color:#2a2a2a;}
+
+/* ── LOCATIONS SECTION ── */
+#locations{
+  padding:10rem 3rem;
+  background:var(--black);
+  border-top:1px solid var(--border-dim);
+}
+.locations-inner{max-width:1280px;margin:0 auto;}
+.locations-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:3px;margin-top:4rem;
+  background:var(--border-dim);
+}
+.loc-card{
+  background:var(--charcoal-mid);
+  padding:3rem;
+  position:relative;overflow:hidden;
+  transition:background 0.35s;
+}
+.loc-card:hover{background:var(--charcoal-light);}
+.loc-card::before{
+  content:'';position:absolute;top:0;left:0;
+  width:3px;height:0;background:var(--gold);
+  transition:height 0.45s cubic-bezier(0.16,1,0.3,1);
+}
+.loc-card:hover::before{height:100%;}
+.loc-badge{
+  display:inline-block;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--black);background:var(--gold);
+  padding:0.25rem 0.8rem;margin-bottom:1.5rem;
+  clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);
+}
+.loc-badge.original{background:var(--white-dim);color:var(--black);}
+.loc-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.5rem;line-height:0.9;color:var(--white);
+  margin-bottom:0.5rem;
+}
+.loc-addr{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.85rem;letter-spacing:0.08em;
+  color:var(--white-dim);line-height:1.6;margin-bottom:1.5rem;
+}
+.loc-phone{
+  font-family:'Bebas Neue',sans-serif;font-size:1.8rem;
+  color:var(--gold);text-decoration:none;
+  display:block;margin-bottom:1.5rem;
+  transition:color 0.3s;letter-spacing:0.04em;
+}
+.loc-phone:hover{color:var(--gold-light);}
+.loc-hours{margin-bottom:2rem;}
+.loc-hours-row{
+  display:flex;justify-content:space-between;
+  padding:0.5rem 0;
+  border-bottom:1px solid var(--border-dim);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.8rem;
+}
+.loc-hours-row .lday{color:var(--white-dim);letter-spacing:0.08em;text-transform:uppercase;}
+.loc-hours-row .ltime{color:var(--white);font-weight:600;}
+.loc-hours-row .ltime.closed{color:var(--red);}
+.loc-img{
+  width:100%;height:200px;object-fit:cover;
+  margin-bottom:2rem;
+  filter:grayscale(30%) contrast(1.1) brightness(0.8);
+  transition:filter 0.4s;
+}
+.loc-card:hover .loc-img{filter:grayscale(0%) contrast(1.05) brightness(0.9);}
+
+/* ── BASEBALL CARD BIO ── */
+#bio-modal{
+  position:fixed;inset:0;z-index:8000;
+  display:flex;align-items:center;justify-content:center;
+  padding:2rem;
+  pointer-events:none;
+  opacity:0;
+  /* no visibility:hidden — GSAP controls opacity */
+}
+#bio-modal.open{pointer-events:all;}
+#bio-overlay{
+  position:absolute;inset:0;
+  background:rgba(6,6,6,0.85);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  opacity:0;transition:opacity 0.4s;cursor:pointer;
+}
+#bio-modal.open #bio-overlay{opacity:1;}
+#bio-panel{
+  position:relative;z-index:2;
+  width:100%;max-width:480px;
+  will-change:transform,opacity;
+  /* Baseball card proportions */
+}
+.bio-card{
+  background:var(--charcoal-mid);
+  border:1px solid var(--border);
+  overflow:hidden;
+  clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px));
+  position:relative;
+}
+/* Top color stripe like a baseball card */
+.bio-card-stripe{
+  height:4px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));
+}
+.bio-card-header{
+  display:grid;grid-template-columns:160px 1fr;
+  gap:0;min-height:200px;
+}
+.bio-card-photo{
+  position:relative;overflow:hidden;
+}
+.bio-card-photo img{
+  width:100%;height:100%;object-fit:cover;object-position:top center;
+  filter:contrast(1.1) brightness(0.9);
+  display:block;
+}
+.bio-card-photo::after{
+  content:'';position:absolute;top:0;right:0;bottom:0;
+  width:40px;
+  background:linear-gradient(to right,transparent,var(--charcoal-mid));
+}
+.bio-card-meta{
+  padding:1.5rem 1.5rem 1.5rem 1rem;
+  background:var(--charcoal-mid);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.bio-card-number{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:5rem;line-height:0.85;
+  color:rgba(201,168,76,0.12);
+  position:absolute;top:0.5rem;right:0.5rem;
+  pointer-events:none;
+}
+.bio-position{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.65rem;letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.35rem;
+}
+.bio-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.4rem;line-height:0.88;color:var(--white);
+  margin-bottom:0.2rem;
+}
+.bio-role-txt{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.78rem;letter-spacing:0.08em;
+  color:var(--white-dim);margin-bottom:1rem;
+}
+/* Stats row — the back-of-card stats */
+.bio-stats-row{
+  display:flex;gap:0;
+  border-top:1px solid var(--border-dim);
+  border-bottom:1px solid var(--border-dim);
+}
+.bio-stat{
+  flex:1;text-align:center;padding:0.9rem 0.5rem;
+  border-right:1px solid var(--border-dim);
+}
+.bio-stat:last-child{border-right:none;}
+.bio-stat-val{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem;color:var(--gold);line-height:1;display:block;
+}
+.bio-stat-lbl{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--white-dim);margin-top:0.2rem;
+}
+/* Bio body */
+.bio-card-body{padding:1.25rem 1.5rem;}
+.bio-blurb{
+  font-size:0.82rem;line-height:1.75;color:var(--white-dim);
+  margin-bottom:1.25rem;
+}
+.bio-skills{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem;}
+.bio-skill-pill{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--border);
+  padding:0.25rem 0.75rem;
+  clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);
+}
+.bio-card-footer{
+  padding:0 1.5rem 1.5rem;
+  display:flex;gap:0.75rem;align-items:center;
+}
+/* Bottom stamp */
+.bio-stamp{
+  position:absolute;bottom:1rem;right:1.5rem;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:0.8rem;letter-spacing:0.2em;
+  color:rgba(201,168,76,0.2);
+  pointer-events:none;
+}
+.bio-close{
+  position:absolute;top:0.75rem;right:0.75rem;z-index:10;
+  width:32px;height:32px;
+  background:rgba(6,6,6,0.8);border:1px solid var(--border);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--white-dim);font-size:1rem;
+  transition:border-color 0.3s,color 0.3s;line-height:1;
+}
+.bio-close:hover{border-color:var(--gold);color:var(--gold);}
+.team-card{cursor:pointer;}
+
+/* ── PHOTO GALLERY STRIP ── */
+#gallery{
+  overflow:hidden;
+  display:flex;gap:3px;
+  height:280px;
+  border-top:1px solid var(--border-dim);
+}
+.gallery-img{
+  flex:1;min-width:0;overflow:hidden;position:relative;
+}
+.gallery-img img{
+  width:100%;height:100%;object-fit:cover;
+  filter:grayscale(40%) brightness(0.7) contrast(1.1);
+  transition:transform 0.6s cubic-bezier(0.16,1,0.3,1),filter 0.5s,flex 0.5s;
+  transform-origin:center;
+}
+.gallery-img:hover img{
+  filter:grayscale(0%) brightness(0.85) contrast(1.05);
+  transform:scale(1.06);
+}
+
+/* ── 3-COL LOCATION GRID ── */
+.locations-grid--3{
+  grid-template-columns:repeat(3,1fr);
+}
+.loc-badge--new{
+  background:var(--red);color:var(--white);
+}
+
+/* ── RESPONSIVE ADDITIONS ── */
+
+/* Tablet: 961–1200px */
+@media(max-width:1200px){
+  .locations-grid--3{grid-template-columns:repeat(2,1fr);}
+  .locations-grid--3 .loc-card:last-child{grid-column:1/-1;max-width:50%;margin:0 auto;width:100%;}
+}
+
+/* Mobile: ≤960px */
+@media(max-width:960px){
+  /* Nav */
+  #site-nav{padding:1.1rem 1.25rem;}
+  #site-nav.stuck{padding:0.8rem 1.25rem;}
+  .nav-links{display:none;}
+  .nav-book{
+    font-size:0.7rem;padding:0.55rem 1.2rem;
+    display:inline-block;
+  }
+
+  /* Cursor off */
+  #cursor-dot,#cursor-outline{display:none;}
+  body{cursor:auto;}
+
+  /* Hero */
+  #hero{min-height:100svh;}
+  .hero-content{padding:0 1.25rem;}
+  .hero-title{font-size:clamp(4rem,22vw,7rem);}
+  .hero-sub{font-size:0.72rem;letter-spacing:0.18em;}
+  .hero-ctas{flex-direction:column;align-items:center;gap:0.85rem;}
+  .btn-primary,.btn-ghost{width:100%;max-width:320px;text-align:center;display:block;}
+  .hero-eyebrow{font-size:0.65rem;letter-spacing:0.25em;}
+
+  /* Ticker */
+  .ticker-inner span{font-size:0.68rem;padding:0 1.2rem;}
+
+  /* Gallery */
+  #gallery{height:180px;}
+
+  /* Stats */
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .stat-cell{padding:2rem 1rem;}
+  .stat-val{font-size:3.2rem;}
+
+  /* About */
+  #about{padding:5rem 1.25rem;}
+  .about-layout{grid-template-columns:1fr;gap:2.5rem;}
+  .about-card{padding:2rem 1.5rem;}
+  .about-card-quote{font-size:1.9rem;}
+
+  /* Services */
+  #services .services-top{padding:5rem 1.25rem 2rem;flex-direction:column;gap:0.75rem;align-items:flex-start;}
+  .services-top-note{text-align:left;max-width:100%;}
+  .svc-scroll{padding:0 1.25rem 2rem;}
+  .svc-card{width:230px;padding:2rem 1.5rem;}
+
+  /* Statement */
+  #statement{padding:5rem 1.25rem;}
+  #statement h2{font-size:clamp(2.8rem,10vw,5rem);}
+  .statement-bg-word{font-size:clamp(5rem,28vw,12rem);}
+
+  /* Team */
+  #team{padding:5rem 1.25rem;}
+  .team-inner{max-width:100%;}
+  .team-head{flex-direction:column;align-items:flex-start;gap:0.75rem;margin-bottom:2.5rem;}
+  .team-head-note{text-align:left;max-width:100%;}
+  .team-grid{grid-template-columns:repeat(2,1fr);gap:2px;}
+
+  /* Hours */
+  #hours{padding:5rem 1.25rem;}
+  .hours-wrap{grid-template-columns:1fr;gap:2.5rem;}
+  .hours-table{margin-top:1.5rem;}
+  .hours-row{font-size:0.82rem;}
+  .hours-box{padding:2rem 1.5rem;}
+  .hours-box h3{font-size:2.2rem;}
+
+  /* Locations */
+  #locations{padding:5rem 1.25rem;}
+  .locations-grid,
+  .locations-grid--3{grid-template-columns:1fr;}
+  .locations-grid--3 .loc-card:last-child{grid-column:auto;max-width:100%;margin:0;}
+  .loc-card{padding:2rem 1.5rem;}
+  .loc-name{font-size:1.9rem;}
+
+  /* Final CTA */
+  #final-cta{padding:6rem 1.25rem;}
+  .cta-big{font-size:clamp(3rem,13vw,6rem);}
+  #final-cta .btn-primary{width:100%;max-width:320px;text-align:center;font-size:0.82rem;padding:1rem 2rem;}
+
+  /* Footer */
+  footer{padding:3.5rem 1.25rem 1.5rem;}
+  .footer-top{grid-template-columns:1fr;gap:2.5rem;padding-bottom:2.5rem;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:0.5rem;}
+
+  /* Section headings */
+  .section-h{font-size:clamp(2.5rem,9vw,4rem);}
+}
+
+/* Small phones: ≤480px */
+@media(max-width:480px){
+  .hero-title{font-size:clamp(3.5rem,24vw,6rem);}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .stat-val{font-size:2.8rem;}
+  .team-grid{grid-template-columns:repeat(2,1fr);}
+  .svc-card{width:200px;}
+  .bio-card-header{grid-template-columns:130px 1fr;}
+  #final-cta{padding:5rem 1rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-outline"></div>
+
+<!-- NAV -->
+<nav id="site-nav">
+  <a href="#" class="nav-logo">Sports<span>&amp;Cuts</span> 2</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#locations">Locations</a></li>
+    <li><a href="#hours">Hours</a></li>
+  </ul>
+  <a href="https://book.squareup.com/appointments/89b57ff1-1878-40eb-8aec-1fbb28a62250/location/Z677YJ568NNAE/services" target="_blank" class="nav-book">Book Now</a>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg-layer"></div>
+  <div class="hero-grid" id="heroGrid"></div>
+  <div class="hero-lines"></div>
+
+  <div class="orb orb-a" id="orbA"></div>
+  <div class="orb orb-b" id="orbB"></div>
+  <div class="orb orb-c" id="orbC"></div>
+
+  <div class="hero-content">
+    <!-- Eyebrow -->
+    <div class="hero-eyebrow" id="heroEyebrow">
+      <span class="hero-eyebrow-line" id="eyebrowLineL"></span>
+      <span id="eyebrowText" style="opacity:0">Maricopa &amp; Casa Grande &nbsp;&bull;&nbsp; 3 Locations &nbsp;&bull;&nbsp; 300+ Reviews</span>
+      <span class="hero-eyebrow-line right" id="eyebrowLineR"></span>
+    </div>
+
+    <!-- Main title — each word wrapped for clip reveal -->
+    <h1 class="hero-title">
+      <span class="title-row">
+        <span class="title-word word-outline" id="tw1">Sports</span>
+      </span>
+      <span class="title-row">
+        <span class="title-word word-gold" id="tw2">&amp;Cuts</span>&nbsp;<span class="title-word" id="tw3">2</span>
+      </span>
+    </h1>
+
+    <!-- Sub -->
+    <div class="hero-sub">
+      <span class="hero-sub-inner" id="heroSubInner">3 Locations &nbsp;&bull;&nbsp; Maricopa &amp; Casa Grande &nbsp;&bull;&nbsp; 300+ Google Reviews</span>
+    </div>
+
+    <!-- CTAs -->
+    <div class="hero-ctas" id="heroCtas">
+      <a href="https://book.squareup.com/appointments/89b57ff1-1878-40eb-8aec-1fbb28a62250/location/Z677YJ568NNAE/services"
+         target="_blank" class="btn-primary pulse-ring">Book Your Appointment</a>
+      <a href="#services" class="btn-ghost">View Services</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll" id="heroScroll">
+    <div class="scroll-bar"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>Regular Cuts</span><span class="bull">&bull;</span>
+    <span>Skin Fades</span><span class="bull">&bull;</span>
+    <span>Razor Fades</span><span class="bull">&bull;</span>
+    <span>Style Cuts</span><span class="bull">&bull;</span>
+    <span>Beard Trims</span><span class="bull">&bull;</span>
+    <span>Grand Slam Package</span><span class="bull">&bull;</span>
+    <span>Hot Towel Shave</span><span class="bull">&bull;</span>
+    <span>Hair Braids</span><span class="bull">&bull;</span>
+    <span>MVP Package</span><span class="bull">&bull;</span>
+    <span>Walk-Ins Welcome</span><span class="bull">&bull;</span>
+    <span>Mon &ndash; Sat</span><span class="bull">&bull;</span>
+    <span>Regular Cuts</span><span class="bull">&bull;</span>
+    <span>Skin Fades</span><span class="bull">&bull;</span>
+    <span>Razor Fades</span><span class="bull">&bull;</span>
+    <span>Style Cuts</span><span class="bull">&bull;</span>
+    <span>Beard Trims</span><span class="bull">&bull;</span>
+    <span>Grand Slam Package</span><span class="bull">&bull;</span>
+    <span>Hot Towel Shave</span><span class="bull">&bull;</span>
+    <span>Hair Braids</span><span class="bull">&bull;</span>
+    <span>MVP Package</span><span class="bull">&bull;</span>
+    <span>Walk-Ins Welcome</span><span class="bull">&bull;</span>
+    <span>Mon &ndash; Sat</span><span class="bull">&bull;</span>
+  </div>
+</div>
+
+<!-- PHOTO GALLERY STRIP -->
+<div id="gallery">
+  <div class="gallery-img"><img src="https://res.cloudinary.com/dpuzecfyp/image/upload/q_auto/f_auto/v1780445878/macroodry-clipper-8254064_m1aynf.jpg" alt="Clipper" loading="lazy"></div>
+  <div class="gallery-img"><img src="https://res.cloudinary.com/dpuzecfyp/image/upload/q_auto/f_auto/v1780445880/macroodry-fashion-8254063_1920_r9ogxo.jpg" alt="Style" loading="lazy"></div>
+  <div class="gallery-img"><img src="https://res.cloudinary.com/dpuzecfyp/image/upload/q_auto/f_auto/v1780446927/488649383_1398735168187100_2541897423668867263_n_qmk8ff.jpg" alt="Shop" loading="lazy"></div>
+  <div class="gallery-img"><img src="https://res.cloudinary.com/dpuzecfyp/image/upload/q_auto/f_auto/v1780445884/macroodry-machine-8254053_cctogs.jpg" alt="Machine" loading="lazy"></div>
+  <div class="gallery-img"><img src="https://res.cloudinary.com/dpuzecfyp/image/upload/q_auto/f_auto/v1780446931/Screenshot_2026-06-02_173048_zowbbm.png" alt="Barber" loading="lazy"></div>
+  <div class="gallery-img"><img src="https://res.cloudinary.com/dpuzecfyp/image/upload/q_auto/f_auto/v1780446929/Screenshot_2026-06-02_173006_be15fh.png" alt="Barbershop" loading="lazy"></div>
+</div>
+<div id="stats">
+  <div class="stats-grid">
+    <div class="stat-cell">
+      <span class="stat-val" data-target="300" data-suffix="+">0</span>
+      <span class="stat-lbl">Google Reviews</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-val" data-target="3">0</span>
+      <span class="stat-lbl">Locations</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-val" data-target="6" data-suffix=" Days">0</span>
+      <span class="stat-lbl">Days a Week</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-val" data-prefix="#" data-target="1">0</span>
+      <span class="stat-lbl">In Maricopa</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ABOUT
+══════════════════════════════════════ -->
+<section id="about">
+  <div class="about-layout">
+    <!-- Left -->
+    <div class="about-left">
+      <div class="section-tag">About Us</div>
+      <h2 class="section-h">
+        <span class="clip-reveal"><span class="clip-inner">More Than</span></span><br>
+        <span class="clip-reveal"><span class="clip-inner">A <span class="gold-text">Cut.</span></span></span>
+      </h2>
+      <div class="about-body">
+        <p>We're not just a barbershop. We're a <strong>home court for men who take their look seriously.</strong> Sports &amp; Cuts 2 brings championship-level craft to every chair in Maricopa.</p>
+        <p>From clean fades to full Grand Slam experiences complete with hot towel shave and facial massage — every service delivered with <strong>precision, respect, and game.</strong></p>
+        <p>Walk-ins are welcome, but <strong>book ahead to lock your spot.</strong> Six skilled barbers. One standard. Yours.</p>
+        <br>
+        <a href="https://book.squareup.com/appointments/89b57ff1-1878-40eb-8aec-1fbb28a62250/location/Z677YJ568NNAE/services" target="_blank" class="btn-primary" style="margin-top:0.5rem">Reserve Your Chair</a>
+      </div>
+    </div>
+    <!-- Right card -->
+    <div class="about-right">
+      <div class="about-card">
+        <div class="card-corner cc-tr"></div>
+        <div class="card-corner cc-bl"></div>
+        <div class="about-card-quote">"Where the game meets the craft."</div>
+        <p>Sports &amp; Cuts 2 is Maricopa's go-to destination for sharp cuts, clean fades, and an experience that matches your standard.</p>
+        <p>Six barbers. One mission. Show up looking like you earned it.</p>
+        <div class="about-card-addr">41600 W Smith-Enke Rd, Suite #2 &mdash; Maricopa, AZ 85138</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SERVICES
+══════════════════════════════════════ -->
+<section id="services">
+  <div class="services-top">
+    <div>
+      <div class="section-tag">What We Offer</div>
+      <h2 class="section-h">The <span class="gold-text">Playbook</span></h2>
+    </div>
+    <p class="services-top-note">Drag or swipe to explore. Book any service online in seconds.</p>
+  </div>
+
+  <div class="svc-scroll" id="svcScroll">
+    <div class="svc-track" id="svcTrack">
+
+      <div class="svc-card"><span class="svc-card-num">01</span><span class="svc-icon">✂</span><div class="svc-name">Buzz Cut</div><div class="svc-desc">One length all around with a clean neckline.</div><div class="svc-price">$18<small>.25</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">02</span><span class="svc-icon">✂</span><div class="svc-name">Line Up</div><div class="svc-desc">Quick edge up on the head only. No beard included.</div><div class="svc-price">$15<small>.00</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">03</span><span class="svc-icon">✂</span><div class="svc-name">Regular Cut</div><div class="svc-desc">Traditional cut with hot lather &amp; razor finish.</div><div class="svc-price">$28<small>.78</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">04</span><span class="svc-icon">✂</span><div class="svc-name">Skin Fade</div><div class="svc-desc">Short tight fade, electric &amp; straight razor finish at neck.</div><div class="svc-price">$30<small>.82</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">05</span><span class="svc-icon">✂</span><div class="svc-name">Razor Fade</div><div class="svc-desc">Fade with a straight razor and a hot towel treatment.</div><div class="svc-price">$32<small>.88</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">06</span><span class="svc-icon">✂</span><div class="svc-name">Style Cut</div><div class="svc-desc">Burst fades, low tapers, low fades, fringe cuts &amp; more.</div><div class="svc-price">$35<small>.96</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">07</span><span class="svc-icon">✂</span><div class="svc-name">Style Cut — Long</div><div class="svc-desc">Messy tops, fringe cuts, low fades with longer length.</div><div class="svc-price">$40<small>.99</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">08</span><span class="svc-icon">🪒</span><div class="svc-name">Beard Trim</div><div class="svc-desc">Line up &amp; trim with a clean razor finish.</div><div class="svc-price">$25<small>.68</small></div></div>
+
+      <div class="svc-card svc-featured"><div class="svc-badge">Most Popular</div><span class="svc-card-num">09</span><span class="svc-icon">🏆</span><div class="svc-name">M.V.P. Package</div><div class="svc-desc">Haircut or fade + beard trim. The complete package.</div><div class="svc-price">$46<small>.23</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">10</span><span class="svc-icon">🏆</span><div class="svc-name">MVP + Style Cut</div><div class="svc-desc">Cut, beard trim, and styled cut all in one session.</div><div class="svc-price">$51<small>.37</small></div></div>
+
+      <div class="svc-card svc-featured"><div class="svc-badge">Premium</div><span class="svc-card-num">11</span><span class="svc-icon">👑</span><div class="svc-name">Grand Slam</div><div class="svc-desc">Cut + straight razor shave + hot steam towel + facial massage.</div><div class="svc-price">$56<small>.51</small></div></div>
+
+      <div class="svc-card svc-featured"><div class="svc-badge">Top Tier</div><span class="svc-card-num">12</span><span class="svc-icon">👑</span><div class="svc-name">Grand Slam + Style</div><div class="svc-desc">Styled cut + full shave experience + steam + facial massage.</div><div class="svc-price">$61<small>.65</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">13</span><span class="svc-icon">🌿</span><div class="svc-name">Hot Towel Shave</div><div class="svc-desc">Straight razor shave, steam towel &amp; facial massage.</div><div class="svc-price">$35<small>.96</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">14</span><span class="svc-icon">🎨</span><div class="svc-name">Hair Design</div><div class="svc-desc">Custom designs by Eli &amp; Angel. Starts at $10.</div><div class="svc-price">$10<small>+</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">15</span><span class="svc-icon">🪢</span><div class="svc-name">Hair Braids</div><div class="svc-desc">By Denise or Mandy only. Call to schedule. Deposit required.</div><div class="svc-price">$20<small>–$50</small></div></div>
+
+      <div class="svc-card"><span class="svc-card-num">16</span><span class="svc-icon">➕</span><div class="svc-name">Add-Ons</div><div class="svc-desc">Hot towel &amp; scalp massage or hair wash with any service.</div><div class="svc-price">$7<small>.19</small></div></div>
+
+    </div>
+  </div>
+  <div class="drag-hint"><span class="drag-arrow">→</span> <span>Drag to explore all services</span></div>
+  <div class="svc-cta-row">
+    <a href="https://book.squareup.com/appointments/89b57ff1-1878-40eb-8aec-1fbb28a62250/location/Z677YJ568NNAE/services" target="_blank" class="btn-primary">Book a Service Online</a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     STATEMENT PARALLAX
+══════════════════════════════════════ -->
+<section id="statement">
+  <div class="statement-bg-word" id="stmtBg">CHAMPIONSHIP</div>
+  <div class="statement-inner">
+    <div class="section-tag" style="justify-content:center">The Standard</div>
+    <h2>
+      Every Cut.<br>
+      <em>Championship</em><br>
+      Level.
+    </h2>
+    <p>Six barbers. Straight razors. Hot steam towels. Precision fades. Maricopa's best — and they show up every single time.</p>
+    <a href="https://book.squareup.com/appointments/89b57ff1-1878-40eb-8aec-1fbb28a62250/location/Z677YJ568NNAE/services" target="_blank" class="btn-primary">Book Now</a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TEAM
+══════════════════════════════════════ -->
+<section id="team">
+  <div class="team-inner">
+    <div class="team-head">
+      <div>
+        <div class="section-tag">The Squad</div>
+        <h2 class="section-h">Meet Your <span class="gold-text">Barbers</span></h2>
+      </div>
+      <p class="team-head-note">Six skilled professionals ready to bring your best look to life — every time.</p>
+    </div>
+    <div class="team-grid">
+
+      <div class="team-card"
+        data-num="#1"
+        data-name="Mandy Cutfinger"
+        data-role="Lead Specialist · Senior Barber"
+        data-img="https://appointments-production-f.squarecdn.com/files/ac8cb35c5b72f4c7d8fd00d4c678707f/original.jpg"
+        data-blurb="Mandy is the heart of Sports &amp; Cuts 2. With years of experience in precision cuts, braids, and wax services, she brings care and attention to detail that keeps clients coming back. Her chair is always full — book early."
+        data-stat1-val="10+" data-stat1-lbl="Years"
+        data-stat2-val="98%" data-stat2-lbl="Retention"
+        data-stat3-val="A+" data-stat3-lbl="Rating"
+        data-skills="Precision Cuts|Hair Braids|Hot Towel|Wax Services|Razor Fades">
+        <div class="team-gold-bar"></div>
+        <div class="team-img-wrap">
+          <img class="team-img" src="https://appointments-production-f.squarecdn.com/files/ac8cb35c5b72f4c7d8fd00d4c678707f/original.jpg" alt="Mandy" loading="lazy">
+        </div>
+        <div class="team-gradient"></div>
+        <div class="team-info"><div class="team-name">Mandy</div><div class="team-role">Cutfinger &middot; Specialist</div></div>
+      </div>
+
+      <div class="team-card"
+        data-num="#2"
+        data-name="Angel Sánchez"
+        data-role="Designer · Barber"
+        data-img="https://appointments-production-f.squarecdn.com/files/45c1c655824c86253b08745dbbbb7188/original.jpeg"
+        data-blurb="Angel brings artistry to every cut. Known for creative hair designs and signature fades, he's the barber you book when you want something that stands out. From simple line art to complex patterns — Angel's work speaks for itself."
+        data-stat1-val="5+" data-stat1-lbl="Years"
+        data-stat2-val="★ 4.9" data-stat2-lbl="Reviews"
+        data-stat3-val="Pro" data-stat3-lbl="Designer"
+        data-skills="Hair Designs|Style Cuts|Skin Fades|Line Ups|Custom Patterns">
+        <div class="team-gold-bar"></div>
+        <div class="team-img-wrap">
+          <img class="team-img" src="https://appointments-production-f.squarecdn.com/files/45c1c655824c86253b08745dbbbb7188/original.jpeg" alt="Angel" loading="lazy">
+        </div>
+        <div class="team-gradient"></div>
+        <div class="team-info"><div class="team-name">Angel</div><div class="team-role">Sánchez &middot; Designer</div></div>
+      </div>
+
+      <div class="team-card"
+        data-num="#3"
+        data-name="Ever Valdez"
+        data-role="Barber"
+        data-img="https://appointments-production-f.squarecdn.com/files/013ba93857a73c6162316678ee8aba24/original.jpg"
+        data-blurb="Ever is a versatile barber with a steady hand and a sharp eye. Whether you're coming in for a clean regular cut or a detailed fade, Ever delivers consistency and precision every single time."
+        data-stat1-val="5+" data-stat1-lbl="Years"
+        data-stat2-val="★ 4.8" data-stat2-lbl="Reviews"
+        data-stat3-val="All" data-stat3-lbl="Styles"
+        data-skills="Regular Cuts|Skin Fades|Razor Fades|Beard Trims|Style Cuts">
+        <div class="team-gold-bar"></div>
+        <div class="team-img-wrap">
+          <img class="team-img" src="https://appointments-production-f.squarecdn.com/files/013ba93857a73c6162316678ee8aba24/original.jpg" alt="Ever" loading="lazy">
+        </div>
+        <div class="team-gradient"></div>
+        <div class="team-info"><div class="team-name">Ever</div><div class="team-role">Valdez &middot; Barber</div></div>
+      </div>
+
+      <div class="team-card"
+        data-num="#4"
+        data-name="Frankie Vall"
+        data-role="Barber"
+        data-img="https://appointments-production-f.squarecdn.com/files/48f169a97c7c2c55c7eed77ecdc461e3/original.jpg"
+        data-blurb="Frankie brings energy and skill to every chair. Known for clean lines and sharp fades, he makes clients feel at home while delivering cuts that hit every time. A barber who takes his craft seriously."
+        data-stat1-val="4+" data-stat1-lbl="Years"
+        data-stat2-val="★ 4.8" data-stat2-lbl="Reviews"
+        data-stat3-val="Top" data-stat3-lbl="Fades"
+        data-skills="Skin Fades|Regular Cuts|Style Cuts|Buzz Cuts|Line Ups">
+        <div class="team-gold-bar"></div>
+        <div class="team-img-wrap">
+          <img class="team-img" src="https://appointments-production-f.squarecdn.com/files/48f169a97c7c2c55c7eed77ecdc461e3/original.jpg" alt="Frankie" loading="lazy">
+        </div>
+        <div class="team-gradient"></div>
+        <div class="team-info"><div class="team-name">Frankie</div><div class="team-role">Vall &middot; Barber</div></div>
+      </div>
+
+      <div class="team-card"
+        data-num="#5"
+        data-name="Monica Martinez"
+        data-role="Barber"
+        data-img="https://appointments-production-f.squarecdn.com/files/0127c3745a91fdab9c6d62fe0c4ba738/original.jpeg"
+        data-blurb="Monica is precision personified. She takes the time to understand exactly what each client wants and executes it flawlessly. Her clients trust her and keep coming back — and that says everything."
+        data-stat1-val="4+" data-stat1-lbl="Years"
+        data-stat2-val="★ 4.9" data-stat2-lbl="Reviews"
+        data-stat3-val="100%" data-stat3-lbl="Precision"
+        data-skills="Regular Cuts|Skin Fades|Style Cuts|Beard Trims|Razor Fades">
+        <div class="team-gold-bar"></div>
+        <div class="team-img-wrap">
+          <img class="team-img" src="https://appointments-production-f.squarecdn.com/files/0127c3745a91fdab9c6d62fe0c4ba738/original.jpeg" alt="Monica" loading="lazy">
+        </div>
+        <div class="team-gradient"></div>
+        <div class="team-info"><div class="team-name">Monica</div><div class="team-role">Martinez &middot; Barber</div></div>
+      </div>
+
+      <div class="team-card"
+        data-num="#6"
+        data-name="Saul Vega"
+        data-role="Barber"
+        data-img="https://appointments-production-f.squarecdn.com/files/33e8c51f4fca870983a267684750a5de/original.jpg"
+        data-blurb="Saul is the closer. Finishing-touch precision, calm confidence, and cuts that land every time. Known for clean fades and design work — Saul is a barber who shows up and delivers."
+        data-stat1-val="3+" data-stat1-lbl="Years"
+        data-stat2-val="★ 4.8" data-stat2-lbl="Reviews"
+        data-stat3-val="Elite" data-stat3-lbl="Finisher"
+        data-skills="Skin Fades|Hair Designs|Style Cuts|Razor Fades|Line Ups">
+        <div class="team-gold-bar"></div>
+        <div class="team-img-wrap">
+          <img class="team-img" src="https://appointments-production-f.squarecdn.com/files/33e8c51f4fca870983a267684750a5de/original.jpg" alt="Saul" loading="lazy">
+        </div>
+        <div class="team-gradient"></div>
+        <div class="team-info"><div class="team-name">Saul</div><div class="team-role">Vega &middot; Barber</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     HOURS
+══════════════════════════════════════ -->
+<section id="hours">
+  <div class="hours-wrap">
+    <div>
+      <div class="section-tag">Find Us</div>
+      <h2 class="section-h">Hours &amp;<br><span class="gold-text">Location</span></h2>
+      <div class="hours-table">
+        <div class="hours-row"><span class="day">Monday</span><span class="time-val">9:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="day">Tuesday</span><span class="time-val">9:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="day">Wednesday</span><span class="time-val">9:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="day">Thursday</span><span class="time-val">9:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="day">Friday</span><span class="time-val">9:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="day">Saturday</span><span class="time-val">9:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="day">Sunday</span><span class="time-val closed">Closed</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="hours-box">
+        <h3>Ready<br>to Book?</h3>
+        <p>Walk-ins welcome based on availability. For a guaranteed spot, book online or call directly.</p>
+        <a href="tel:+15204138014" class="hours-phone">(520) 413-8014</a>
+        <a href="https://book.squareup.com/appointments/89b57ff1-1878-40eb-8aec-1fbb28a62250/location/Z677YJ568NNAE/services" target="_blank" class="btn-primary" style="display:inline-block;margin-bottom:1.5rem">Book Online Now</a>
+        <p><strong style="color:var(--white);font-weight:500">41600 W Smith-Enke Rd, Suite #2</strong><br>Maricopa, AZ 85138</p>
+        <div class="policy-note">
+          <strong>Cancellation Policy:</strong> $10 fee for no-call no-shows or cancellations within 30 minutes. Please call at least 1 hour before to reschedule. Failure to pay results in no future bookings.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     LOCATIONS
+══════════════════════════════════════ -->
+<section id="locations">
+  <div class="locations-inner">
+    <div class="section-tag">Three Locations</div>
+    <h2 class="section-h">Find Your <span class="gold-text">Nearest Shop</span></h2>
+    <div class="locations-grid locations-grid--3">
+
+      <!-- Location 1: Prime -->
+      <div class="loc-card">
+        <img class="loc-img"
+          src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAG9IeINRiuYXAVVWMW_H1rH3dtimp4E9nyqzwwIWgM2CyttKZVXORBs4eD2n0QlmybQeMP4Dcbts5mc3bfu22U1Hbh2cQ3qP0FN5kzZJ9bj0dzvIr1GzhtGObk5Bn-1DSXXptQ=s680-w680-h510-rw"
+          alt="Sports & Cuts Prime location" loading="lazy">
+        <div class="loc-badge">Prime Location</div>
+        <div class="loc-name">Sports &amp; Cuts Prime</div>
+        <div class="loc-addr">
+          41600 W Smith Enke Rd, Ste 2<br>
+          Maricopa, AZ 85138
+        </div>
+        <a href="tel:+15204138014" class="loc-phone">(520) 413-8014</a>
+        <div class="loc-hours">
+          <div class="loc-hours-row"><span class="lday">Mon – Sat</span><span class="ltime">9:00 AM – 6:00 PM</span></div>
+          <div class="loc-hours-row"><span class="lday">Sunday</span><span class="ltime closed">Closed</span></div>
+        </div>
+        <a href="https://book.squareup.com/appointments/89b57ff1-1878-40eb-8aec-1fbb28a62250/location/Z677YJ568NNAE/services" target="_blank" class="btn-primary">Book at This Location</a>
+      </div>
+
+      <!-- Location 2: Original -->
+      <div class="loc-card">
+        <img class="loc-img"
+          src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEaHs63EwDqX8WnWHwkIjGw6Ctv72CH7pzvao3X5qTZHTwaR5Q4qlllCHtN5Cqi8sGO10GEw9HxY7c0SzYjQstAlxvUmvMps97aVRts5HEl3JA2ycEB0yC734kpBcHH4NKc95Mh=s680-w680-h510-rw"
+          alt="Sports & Cuts original location" loading="lazy">
+        <div class="loc-badge original">Original Location · Est. 2013</div>
+        <div class="loc-name">Sports &amp; Cuts</div>
+        <div class="loc-addr">
+          20924 N John Wayne Pkwy<br>
+          Maricopa, AZ 85139
+        </div>
+        <a href="tel:+15205684246" class="loc-phone">(520) 568-4246</a>
+        <div class="loc-hours">
+          <div class="loc-hours-row"><span class="lday">Mon – Sat</span><span class="ltime">9:00 AM – 6:00 PM</span></div>
+          <div class="loc-hours-row"><span class="lday">Sunday</span><span class="ltime closed">Closed</span></div>
+        </div>
+        <a href="tel:+15205684246" class="btn-ghost" style="display:inline-block">Call to Book</a>
+      </div>
+
+      <!-- Location 3: Casa Grande -->
+      <div class="loc-card">
+        <img class="loc-img"
+          src="https://res.cloudinary.com/dpuzecfyp/image/upload/q_auto/f_auto/v1780446927/488649383_1398735168187100_2541897423668867263_n_qmk8ff.jpg"
+          alt="Sports & Cuts Casa Grande location" loading="lazy">
+        <div class="loc-badge loc-badge--new">Now Open</div>
+        <div class="loc-name">Sports &amp; Cuts<br><span style="font-size:1.6rem">Casa Grande</span></div>
+        <div class="loc-addr">
+          177 W Cottonwood Ln, Suite #14<br>
+          Casa Grande, AZ 85122
+        </div>
+        <a href="tel:+15206770261" class="loc-phone">(520) 677-0261</a>
+        <div class="loc-hours">
+          <div class="loc-hours-row"><span class="lday">Mon – Sat</span><span class="ltime">9:00 AM – 6:00 PM</span></div>
+          <div class="loc-hours-row"><span class="lday">Sunday</span><span class="ltime closed">Closed</span></div>
+        </div>
+        <a href="tel:+15206770261" class="btn-ghost" style="display:inline-block">Call to Book</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FINAL CTA
+══════════════════════════════════════ -->
+<section id="final-cta">
+  <div class="cta-inner">
+    <div class="section-tag" style="justify-content:center">Lock In Your Look</div>
+    <div class="cta-big">
+      Step Into<br>Your
+      <em>Best.</em>
+    </div>
+    <p>Six expert barbers. Championship-level craft. A shop that takes your look as seriously as you do. Maricopa's home court for premium cuts.</p>
+    <a href="https://book.squareup.com/appointments/89b57ff1-1878-40eb-8aec-1fbb28a62250/location/Z677YJ568NNAE/services" target="_blank" class="btn-primary pulse-ring" style="font-size:0.9rem;padding:1.2rem 3rem">Book Your Appointment</a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     BASEBALL CARD BIO MODAL
+══════════════════════════════════════ -->
+<div id="bio-modal" role="dialog" aria-modal="true" aria-label="Barber bio">
+  <div id="bio-overlay"></div>
+  <div id="bio-panel">
+    <button class="bio-close" id="bio-close" aria-label="Close">&times;</button>
+    <div class="bio-card">
+      <div class="bio-card-stripe"></div>
+      <div class="bio-card-header">
+        <div class="bio-card-photo">
+          <img id="bio-img" src="" alt="">
+        </div>
+        <div class="bio-card-meta">
+          <div class="bio-card-number" id="bio-number">#1</div>
+          <div class="bio-position">Sports &amp; Cuts 2</div>
+          <div class="bio-name" id="bio-name"></div>
+          <div class="bio-role-txt" id="bio-role"></div>
+        </div>
+      </div>
+      <div class="bio-stats-row" id="bio-stats"></div>
+      <div class="bio-card-body">
+        <p class="bio-blurb" id="bio-blurb"></p>
+        <div class="bio-skills" id="bio-skills"></div>
+      </div>
+      <div class="bio-card-footer">
+        <a id="bio-book"
+          href="https://book.squareup.com/appointments/89b57ff1-1878-40eb-8aec-1fbb28a62250/location/Z677YJ568NNAE/services"
+          target="_blank" class="btn-primary">Book This Barber</a>
+      </div>
+      <div class="bio-stamp">Sports &amp; Cuts 2 &middot; Maricopa AZ</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer>
+  <div class="footer-wrap">
+    <div class="footer-top">
+      <div>
+        <span class="footer-logo-txt">Sports<span>&amp;Cuts</span></span>
+        <p class="footer-about">Maricopa's original barbershop, now with 3 locations across Maricopa and Casa Grande. Where the game meets the craft. Expert barbers serving the community with precision and pride since 2013.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/sportsncuts2" target="_blank" class="soc">IG</a>
+          <a href="https://www.facebook.com/SportsNCuts2/" target="_blank" class="soc">FB</a>
+          <a href="https://www.tiktok.com/@sportsncuts2" target="_blank" class="soc">TK</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li>Regular &amp; Buzz Cuts</li>
+          <li>Skin &amp; Razor Fades</li>
+          <li>Style Cuts</li>
+          <li>Beard Trims</li>
+          <li>M.V.P. Package</li>
+          <li>Grand Slam</li>
+          <li>Hot Towel Shave</li>
+          <li>Hair Braids &amp; Wax</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Locations</h4>
+        <ul>
+          <li><strong style="color:var(--white);font-weight:500">Sports &amp; Cuts Prime</strong><br>41600 W Smith Enke Rd, Ste 2<br>Maricopa, AZ 85138<br><a href="tel:+15204138014">(520) 413-8014</a></li>
+          <li style="margin-top:0.85rem"><strong style="color:var(--white);font-weight:500">Sports &amp; Cuts (Original)</strong><br>20924 N John Wayne Pkwy<br>Maricopa, AZ 85139<br><a href="tel:+15205684246">(520) 568-4246</a></li>
+          <li style="margin-top:0.85rem"><strong style="color:var(--white);font-weight:500">Sports &amp; Cuts Casa Grande</strong><br>177 W Cottonwood Ln, Ste 14<br>Casa Grande, AZ 85122<br><a href="tel:+15206770261">(520) 677-0261</a></li>
+          <li style="margin-top:1rem"><a href="https://book.squareup.com/appointments/89b57ff1-1878-40eb-8aec-1fbb28a62250/location/Z677YJ568NNAE/services" target="_blank" style="color:var(--gold)">Book Online →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Sports &amp; Cuts. All rights reserved. Maricopa &amp; Casa Grande, AZ.</p>
+      <p class="footer-credit"><a href="https://www.gdgraphix.com" target="_blank" rel="noopener" style="color:#2a2a2a;text-decoration:none;transition:color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='#2a2a2a'">Site by GD Graphix LLC</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     GSAP + ScrollTrigger
+══════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+(function(){
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ── 0. FOUC FIX ── */
+  gsap.set('body',{visibility:'visible'});
+
+  /* ════════════════════════════════════
+     1. CUSTOM CURSOR (raw rAF — no lag)
+  ════════════════════════════════════ */
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-outline');
+  let mx=window.innerWidth/2, my=window.innerHeight/2;
+  let rx=mx, ry=my;
+  const RING_EASE = 0.10; // lower = more lag = floatier
+
+  window.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+
+  (function rafCursor(){
+    gsap.set(dot, { x:mx, y:my, xPercent:-50, yPercent:-50 });
+    rx += (mx-rx)*RING_EASE;
+    ry += (my-ry)*RING_EASE;
+    gsap.set(ring, { x:rx, y:ry, xPercent:-50, yPercent:-50 });
+    requestAnimationFrame(rafCursor);
+  })();
+
+  document.querySelectorAll('a,button,.svc-card,.team-card,.stat-cell').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('cur-expand'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-expand'));
+  });
+
+  /* ════════════════════════════════════
+     2. NAV SCROLL STATE
+  ════════════════════════════════════ */
+  ScrollTrigger.create({
+    start: 'top -50',
+    onEnter: ()=> document.getElementById('site-nav').classList.add('stuck'),
+    onLeaveBack: ()=> document.getElementById('site-nav').classList.remove('stuck'),
+  });
+
+  /* ════════════════════════════════════
+     3. HERO CINEMATIC ENTRANCE
+     Spring physics: stiffness 280, damping 28
+     This is the Framer Motion "spring" feel in GSAP
+  ════════════════════════════════════ */
+
+  // Framer-style spring helper
+  function spring(extra){
+    return Object.assign({ type:'spring', stiffness:280, damping:28 }, extra||{});
+  }
+
+  const heroTL = gsap.timeline({ defaults:{ ease:'power4.out' } });
+
+  // Set initial states
+  gsap.set(['#tw1','#tw2','#tw3'], { yPercent:105, rotateX:-15 });
+  gsap.set('#eyebrowText', { opacity:0, y:10 });
+  gsap.set(['#eyebrowLineL','#eyebrowLineR'], { scaleX:0 });
+  gsap.set('#heroSubInner', { yPercent:120 });
+  gsap.set('#heroCtas', { opacity:0, y:28 });
+  gsap.set('#heroScroll', { opacity:0, y:15 });
+  gsap.set('.nav-logo', { opacity:0, x:-18 });
+  gsap.set('.nav-links a', { opacity:0, y:-10 });
+  gsap.set('.nav-book', { opacity:0, x:18 });
+
+  heroTL
+    // Nav
+    .to('.nav-logo',       { opacity:1, x:0, duration:0.7, ease:'power3.out' }, 0.15)
+    .to('.nav-links a',    { opacity:1, y:0, duration:0.6, ease:'power3.out', stagger:0.07 }, 0.2)
+    .to('.nav-book',       { opacity:1, x:0, duration:0.7, ease:'power3.out' }, 0.35)
+
+    // Eyebrow lines expand then text fades
+    .to('#eyebrowLineL',   { scaleX:1, duration:0.6, ease:'power3.inOut' }, 0.5)
+    .to('#eyebrowLineR',   { scaleX:1, duration:0.6, ease:'power3.inOut' }, 0.5)
+    .to('#eyebrowText',    { opacity:1, y:0, duration:0.5, ease:'power2.out' }, 0.85)
+
+    // Title words slam up — spring physics feel
+    .to('#tw1', {
+      yPercent:0, rotateX:0, duration:1.1,
+      ease:'elastic.out(1, 0.75)'
+    }, 0.7)
+    .to('#tw2', {
+      yPercent:0, rotateX:0, duration:1.1,
+      ease:'elastic.out(1, 0.75)'
+    }, 0.85)
+    .to('#tw3', {
+      yPercent:0, rotateX:0, duration:1.0,
+      ease:'elastic.out(1, 0.8)'
+    }, 0.92)
+
+    // Sub line slides up
+    .to('#heroSubInner',   { yPercent:0, duration:0.9, ease:'power4.out' }, 1.1)
+
+    // CTAs spring in
+    .to('#heroCtas',       { opacity:1, y:0, duration:0.8, ease:'back.out(1.4)' }, 1.3)
+
+    // Scroll indicator
+    .to('#heroScroll',     { opacity:1, y:0, duration:0.7, ease:'power2.out' }, 1.55);
+
+  /* ════════════════════════════════════
+     4. HERO PARALLAX (scrub)
+  ════════════════════════════════════ */
+  const heroParallax = { trigger:'#hero', start:'top top', end:'bottom top', scrub:true };
+
+  gsap.to('#heroGrid',  { yPercent:-30, ease:'none', scrollTrigger:heroParallax });
+  gsap.to('#orbA',      { y:-110, x:35,  ease:'none', scrollTrigger:{ ...heroParallax, scrub:1.8 } });
+  gsap.to('#orbB',      { y:-75,  x:-25, ease:'none', scrollTrigger:{ ...heroParallax, scrub:2.2 } });
+  gsap.to('#orbC',      { y:-55,         ease:'none', scrollTrigger:{ ...heroParallax, scrub:1.4 } });
+
+  /* ════════════════════════════════════
+     5. STATEMENT SECTION PARALLAX
+  ════════════════════════════════════ */
+  gsap.to('#stmtBg', {
+    x: -160,
+    ease:'none',
+    scrollTrigger:{
+      trigger:'#statement',
+      start:'top bottom', end:'bottom top',
+      scrub:1.8
+    }
+  });
+
+  /* ════════════════════════════════════
+     6. STAT COUNTERS (spring ease on count)
+  ════════════════════════════════════ */
+  document.querySelectorAll('.stat-val[data-target]').forEach(el=>{
+    const target  = +el.dataset.target;
+    const prefix  = el.dataset.prefix  || '';
+    const suffix  = el.dataset.suffix  || '';
+
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 88%',
+      once: true,
+      onEnter(){
+        const obj = { val:0 };
+        gsap.to(obj, {
+          val: target,
+          duration: 2,
+          ease: 'power2.out',
+          onUpdate(){ el.textContent = prefix + Math.round(obj.val) + suffix; },
+          onComplete(){ el.textContent = prefix + target + suffix; }
+        });
+      }
+    });
+  });
+
+  /* ════════════════════════════════════
+     7. SCROLL-TRIGGERED SECTION REVEALS
+     Each uses a different animation so
+     nothing feels cookie-cutter
+  ════════════════════════════════════ */
+
+  // Helper: staggered fade-up
+  function revealUp(els, trigger, opts){
+    gsap.from(els, Object.assign({
+      opacity:0, y:55, duration:0.9,
+      ease:'power3.out', stagger:0.12,
+      scrollTrigger:{ trigger, start:'top 82%', once:true }
+    }, opts||{}));
+  }
+
+  // About — split enter: left from left, right from right
+  gsap.from('#about .about-left',{
+    opacity:0, x:-65, duration:1.1, ease:'power3.out',
+    scrollTrigger:{ trigger:'#about', start:'top 80%', once:true }
+  });
+  gsap.from('#about .about-right',{
+    opacity:0, x:65, duration:1.1, ease:'power3.out',
+    scrollTrigger:{ trigger:'#about', start:'top 80%', once:true },
+    delay:0.1
+  });
+
+  // Clip-reveal headings (wipe up from inside overflow:hidden)
+  document.querySelectorAll('.clip-inner').forEach((inner,i)=>{
+    gsap.from(inner,{
+      yPercent:105, duration:0.9,
+      ease:'power4.out',
+      delay: i * 0.1,
+      scrollTrigger:{ trigger:inner.closest('.clip-reveal'), start:'top 85%', once:true }
+    });
+  });
+
+  // Services heading
+  gsap.from('.services-top', {
+    opacity:0, y:40, duration:0.9, ease:'power3.out',
+    scrollTrigger:{ trigger:'#services', start:'top 80%', once:true }
+  });
+
+  // Service cards — staggered from right (feels like a conveyor belt loading)
+  gsap.from('.svc-card',{
+    opacity:0, x:55, duration:0.75,
+    ease:'power3.out', stagger:0.06,
+    scrollTrigger:{ trigger:'#services', start:'top 75%', once:true }
+  });
+
+  // Statement
+  gsap.from('.statement-inner',{
+    opacity:0, y:60, duration:1.1, ease:'power3.out',
+    scrollTrigger:{ trigger:'#statement', start:'top 78%', once:true }
+  });
+
+  // Team section tag + heading
+  gsap.from('.team-head', {
+    opacity:0, y:40, duration:0.9, ease:'power3.out',
+    scrollTrigger:{ trigger:'#team', start:'top 80%', once:true }
+  });
+
+  // Team cards: stagger with slight y + clip from bottom
+  gsap.from('.team-card',{
+    opacity:0, y:60, duration:0.85,
+    ease:'power3.out', stagger:0.09,
+    scrollTrigger:{ trigger:'.team-grid', start:'top 82%', once:true }
+  });
+
+  // Hours: left slides in, right box drops in with spring
+  gsap.from('.hours-wrap > div:first-child',{
+    opacity:0, x:-50, duration:1.0, ease:'power3.out',
+    scrollTrigger:{ trigger:'#hours', start:'top 80%', once:true }
+  });
+  gsap.from('.hours-box',{
+    opacity:0, y:50, scale:0.97, duration:1.0,
+    ease:'back.out(1.6)',
+    scrollTrigger:{ trigger:'#hours', start:'top 80%', once:true },
+    delay:0.15
+  });
+
+  // Each hours row: stagger wipe-in
+  gsap.from('.hours-row',{
+    opacity:0, x:-20, duration:0.55,
+    ease:'power2.out', stagger:0.07,
+    scrollTrigger:{ trigger:'.hours-table', start:'top 85%', once:true }
+  });
+
+  // Final CTA: scale + fade (spring)
+  gsap.from('.cta-inner',{
+    opacity:0, scale:0.96, y:50, duration:1.1,
+    ease:'back.out(1.5)',
+    scrollTrigger:{ trigger:'#final-cta', start:'top 80%', once:true }
+  });
+
+  // Footer
+  gsap.from('.footer-top > *',{
+    opacity:0, y:35, duration:0.85,
+    ease:'power3.out', stagger:0.12,
+    scrollTrigger:{ trigger:'footer', start:'top 88%', once:true }
+  });
+
+  /* ════════════════════════════════════
+     8. MAGNETIC BUTTONS (spring physics)
+  ════════════════════════════════════ */
+  document.querySelectorAll('.btn-primary,.btn-ghost,.nav-book').forEach(btn=>{
+    btn.addEventListener('mousemove', e=>{
+      const r  = btn.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width/2))  * 0.22;
+      const dy = (e.clientY - (r.top  + r.height/2)) * 0.22;
+      gsap.to(btn,{ x:dx, y:dy, duration:0.35, ease:'power2.out' });
+    });
+    btn.addEventListener('mouseleave', ()=>{
+      // Elastic spring-back — this is the Framer Motion "spring" feel
+      gsap.to(btn,{ x:0, y:0, duration:0.7, ease:'elastic.out(1, 0.45)' });
+    });
+  });
+
+  /* ════════════════════════════════════
+     9. DRAG-TO-SCROLL SERVICE TRACK
+  ════════════════════════════════════ */
+  const svcScroll = document.getElementById('svcScroll');
+  let isDragging=false, startX=0, scrollStart=0;
+
+  svcScroll.addEventListener('mousedown', e=>{
+    isDragging=true;
+    startX = e.pageX - svcScroll.offsetLeft;
+    scrollStart = svcScroll.scrollLeft;
+    gsap.set(svcScroll,{ cursor:'grabbing' });
+  });
+  window.addEventListener('mouseup', ()=>{
+    isDragging=false;
+    gsap.set(svcScroll,{ cursor:'grab' });
+  });
+  svcScroll.addEventListener('mousemove', e=>{
+    if(!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - svcScroll.offsetLeft;
+    svcScroll.scrollLeft = scrollStart - (x - startX)*1.6;
+  });
+
+  /* ════════════════════════════════════
+     11. BASEBALL CARD BIO MODAL
+  ════════════════════════════════════ */
+  const modal    = document.getElementById('bio-modal');
+  const overlay  = document.getElementById('bio-overlay');
+  const panel    = document.getElementById('bio-panel');
+  const closeBtn = document.getElementById('bio-close');
+
+  function openModal(card){
+    const d = card.dataset;
+
+    document.getElementById('bio-img').src            = d.img   || '';
+    document.getElementById('bio-img').alt            = d.name  || '';
+    document.getElementById('bio-number').textContent = d.num   || '';
+    document.getElementById('bio-name').textContent   = d.name  || '';
+    document.getElementById('bio-role').textContent   = d.role  || '';
+    document.getElementById('bio-blurb').innerHTML    = d.blurb || '';
+
+    // Stats row
+    const statsEl = document.getElementById('bio-stats');
+    statsEl.innerHTML = `
+      <div class="bio-stat">
+        <span class="bio-stat-val">${d.stat1Val||d['stat1-val']||''}</span>
+        <span class="bio-stat-lbl">${d.stat1Lbl||d['stat1-lbl']||''}</span>
+      </div>
+      <div class="bio-stat">
+        <span class="bio-stat-val">${d.stat2Val||d['stat2-val']||''}</span>
+        <span class="bio-stat-lbl">${d.stat2Lbl||d['stat2-lbl']||''}</span>
+      </div>
+      <div class="bio-stat">
+        <span class="bio-stat-val">${d.stat3Val||d['stat3-val']||''}</span>
+        <span class="bio-stat-lbl">${d.stat3Lbl||d['stat3-lbl']||''}</span>
+      </div>`;
+
+    // Skill pills
+    const skillsEl = document.getElementById('bio-skills');
+    skillsEl.innerHTML = '';
+    (d.skills||'').split('|').forEach(s=>{
+      const p = document.createElement('span');
+      p.className = 'bio-skill-pill';
+      p.innerHTML = s.trim();
+      skillsEl.appendChild(p);
+    });
+
+    // Show modal wrapper first
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // Animate wrapper + panel together
+    gsap.to(modal,  { opacity:1, duration:0.35, ease:'power2.out' });
+    gsap.fromTo(panel,
+      { opacity:0, scale:0.88, y:40 },
+      { opacity:1, scale:1,    y:0,
+        duration:0.55, ease:'back.out(1.8)' }
+    );
+  }
+
+  function closeModal(){
+    gsap.to(modal, { opacity:0, duration:0.3, ease:'power2.in' });
+    gsap.to(panel, {
+      opacity:0, scale:0.94, y:20,
+      duration:0.3, ease:'power3.in',
+      onComplete(){
+        modal.classList.remove('open');
+        document.body.style.overflow='';
+      }
+    });
+  }
+
+  document.querySelectorAll('.team-card[data-name]').forEach(card=>{
+    card.addEventListener('click', ()=> openModal(card));
+  });
+  closeBtn.addEventListener('click',  closeModal);
+  overlay.addEventListener('click',   closeModal);
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape' && modal.classList.contains('open')) closeModal();
+  });
+
+  /* ════════════════════════════════════
+     12. LOCATIONS + GALLERY REVEALS
+  ════════════════════════════════════ */
+  gsap.from('.loc-card',{
+    opacity:0, y:50, duration:0.9, ease:'power3.out', stagger:0.15,
+    scrollTrigger:{ trigger:'#locations', start:'top 80%', once:true }
+  });
+  gsap.from('.gallery-img',{
+    opacity:0, scaleY:0.85, duration:0.8, ease:'power3.out', stagger:0.07,
+    transformOrigin:'bottom',
+    scrollTrigger:{ trigger:'#gallery', start:'top 90%', once:true }
+  });
+
+  /* ════════════════════════════════════
+     13. SMOOTH ANCHOR SCROLL
+  ════════════════════════════════════ */
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const t = document.querySelector(a.getAttribute('href'));
+      if(t){ e.preventDefault(); t.scrollIntoView({ behavior:'smooth', block:'start' }); }
+    });
+  });
+
+})();
+</script>
+</body>
+</html>
